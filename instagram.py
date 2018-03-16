@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import tldextract
 
 class Instagram:
 
@@ -12,7 +13,8 @@ class Instagram:
         return str(self.url)
 
     def validate(self):
-        if self.source_code.find("Sorry, this page") > -1 or self.url.find("/p/") == -1:
+        domain = tldextract.extract(self.url)
+        if self.source_code.find("Sorry, this page") > -1 or self.url.find("/p/") == -1 or domain.domain != "instagram":
             raise Exception("Invalid Instagram Media URL")
         return True
 
@@ -36,4 +38,3 @@ class Instagram:
 
     def get_source_code(self):
         return self.source_code
-
